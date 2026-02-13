@@ -47,14 +47,14 @@ export default function Statistik() {
               </ul>
             </div>
 
-            <div className="pt-15 px-30">
-              <h1 className="text-center text-black text-[17px] font-black">
+            <div className="pt-20 px-30">
+              <h1 className="text-center text-black text-[17px] font-black pb-7">
                 Pasar Saroha bulan februari 2026
               </h1>
               <Grafik />
             </div>
 
-            <div className="pt-15 px-30">
+            <div className="pt-12 px-30 pb-20">
               <Tabel />
             </div>
           </main>
