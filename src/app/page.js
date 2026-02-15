@@ -2,15 +2,29 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CardComplex from "./components/CardComplex";
+import { useEffect, useState } from "react";
+import { fetchKomoditas } from "@/lib/api";
+import "./custom.css";
 
 export default function Home() {
+  const [komoditas, setKomoditas] = useState([]);
+
+  useEffect(() => {
+    fetchKomoditas()
+      .then((res) => {
+        console.log(res);
+        setKomoditas(res.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <>
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
         <main className="flex-1 pt-16.75">
-          <div className="pl-25 pr-25 pt-16.75">
+          <div className="container-text px-25 sm:px-15 md:px-20 pt-16.75">
             <h1 className="text-[40px] font-semibold text-black">
               Harga rata-rata komoditas hari ini di Palas
             </h1>
@@ -18,16 +32,35 @@ export default function Home() {
               Harga dibandingkan dengan hari sebelumnya 08 Feb 2026
             </p>
 
-            <CardComplex 
-            img="/images/cabai.png"
-            title="Cabe Rawit Merah"
-            price="Rp. 86.905/kg"
-            button="Turun Rp. 2.000"
-            />
+            <div className="card-product flex flex-wrap gap-2.5">
+              {komoditas.map((item) => {
+                const harga = Number(item.harga_hari_ini || 0);
+                const selisih = Number(item.selisih || 0);
+
+                return (
+                  <CardComplex
+                    key={item.id}
+                    img={`/images/${item.product_photo}`}
+                    title={item.nama_komoditas}
+                    price={`Rp ${harga.toLocaleString()}/${item.satuan}`}
+                    button={
+                      selisih > 0
+                        ? `Naik Rp ${Math.abs(selisih).toLocaleString()}`
+                        : selisih < 0
+                          ? `Turun Rp ${Math.abs(selisih).toLocaleString()}`
+                          : "Stabil"
+                    }
+                    isDown={selisih < 0}
+                  />
+                );
+              })}
+            </div>
           </div>
         </main>
 
-        <Footer />
+        <div className="pt-15">
+          <Footer />
+        </div>
       </div>
     </>
   );
