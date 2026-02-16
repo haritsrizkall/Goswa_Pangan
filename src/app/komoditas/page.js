@@ -15,7 +15,6 @@ export default function Komoditas() {
   useEffect(() => {
     fetchKomoditasByNama()
       .then((res) => {
-        console.log(res);
         setKomoditas(res.data);
 
         const names = Array.from(

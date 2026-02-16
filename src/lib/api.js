@@ -35,3 +35,45 @@ export async function fetchKomoditasByNama() {
 
     return res.json();
 }
+
+export async function fetchGrafikKomoditas(komoditas, bulan, tahun) {
+    const res = await fetch(`${BASE_URL}/api/harga/grafik-komoditas/${komoditas}/${bulan}/${tahun}`, {
+        cache: "no-store",
+    });
+
+    if (!res.ok) {
+        throw new Error("Gagal fetch Grafik Komoditas");
+    }
+
+    return res.json();
+}
+
+export async function fetchGrafikPasar(pasar, bulan, tahun) {
+    const res = await fetch(`${BASE_URL}/api/harga/grafik-pasar/${pasar}/${bulan}/${tahun}`, {
+        cache: "no-store",
+    });
+
+    if (!res.ok) {
+        throw new Error("Gagal fetch Grafik Pasar");
+    }
+
+    return res.json();
+}
+
+export async function fetchTabelPerPasar(pasar, bulan, tahun) {
+  const res = await fetch(
+    `${BASE_URL}/api/harga/tabel-pasar/${pasar}/${bulan}/${tahun}`,
+    { cache: "no-store" }
+  );
+  if (!res.ok) throw new Error("Gagal fetch tabel per pasar");
+  return res.json();
+}
+
+export async function fetchTabelPerKomoditas(komoditas, bulan, tahun) {
+  const res = await fetch(
+    `${BASE_URL}/api/harga/tabel-komoditas/${komoditas}/${bulan}/${tahun}`,
+    { cache: "no-store" }
+  );
+  if (!res.ok) throw new Error("Gagal fetch tabel per komoditas");
+  return res.json();
+}

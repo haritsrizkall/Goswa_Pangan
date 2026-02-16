@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { ArrowDownIcon } from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
 import "../../app/custom.css";
 
 export default function CardComplex({ img, title, price, button, isDown }) {
@@ -33,7 +33,11 @@ export default function CardComplex({ img, title, price, button, isDown }) {
                   : "text-green-500 bg-green-400/15 hover:bg-brand-strong focus:ring-brand-medium"
               }`}
             >
-              <ArrowDownIcon className="w-4 h-4 me-1.5" />
+              {isDown ? (
+                <ArrowDownIcon className="w-4 h-4 me-1.5" />
+              ) : (
+                <ArrowUpIcon className="w-4 h-4 me-1.5" />
+              )}
               {button}
             </button>
           </div>

@@ -12,7 +12,6 @@ export default function Home() {
   useEffect(() => {
     fetchKomoditas()
       .then((res) => {
-        console.log(res);
         setKomoditas(res.data);
       })
       .catch((err) => console.error(err));

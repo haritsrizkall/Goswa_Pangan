@@ -1,9 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
-export default function Dropdown({ label, items }) {
+export default function Dropdown({ label, items, onSelect }) {
   const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="relative">
@@ -13,9 +24,7 @@ export default function Dropdown({ label, items }) {
       >
         {label}
         <ChevronDownIcon
-          className={`w-4 h-4 transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -24,12 +33,16 @@ export default function Dropdown({ label, items }) {
           <ul className="p-2 text-sm text-black font-medium">
             {items.map((item, i) => (
               <li key={i}>
-                <a
-                  href="#"
-                  className="inline-flex items-center w-full p-2 hover:bg-gray-100 rounded"
+                <button
+                  type="button"
+                  className="inline-flex items-center w-full p-2 hover:bg-gray-100 rounded text-left"
+                  onClick={() => {
+                    onSelect?.(item); 
+                    setOpen(false); 
+                  }}
                 >
                   {item}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
