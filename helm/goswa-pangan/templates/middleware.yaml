@@ -1,0 +1,13 @@
+{{- if and .Values.ingressRoute.enabled .Values.ingressRoute.tls.enabled .Values.ingressRoute.tls.redirectHttp -}}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "goswa-pangan.fullname" . }}-redirect-https
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "goswa-pangan.labels" . | nindent 4 }}
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+{{- end }}

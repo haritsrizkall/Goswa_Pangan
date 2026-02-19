@@ -1,0 +1,14 @@
+apiVersion: v2
+name: goswa-pangan
+description: Goswa Pangan - Food commodity pricing dashboard (Next.js static site)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - goswa
+  - pangan
+  - nextjs
+  - static
+  - commodity
+maintainers:
+  - name: Goswa Team
