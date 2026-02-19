@@ -1,11 +1,7 @@
 "use client";
-import Dropdown from "../components/Dropdown";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Tabel from "../components/Tabel";
-import Grafik from "../components/Grafik";
+
 import { useEffect, useState } from "react";
+import { Download } from "lucide-react";
 import {
   fetchGrafikKomoditas,
   fetchGrafikPasar,
@@ -14,6 +10,19 @@ import {
   fetchTabelPerKomoditas,
   fetchTabelPerPasar,
 } from "@/lib/api";
+import Grafik from "@/components/Grafik";
+import Tabel from "@/components/Tabel";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Statistik() {
   const [pasar, setPasar] = useState([]);
@@ -90,95 +99,130 @@ export default function Statistik() {
     month: "long",
   });
 
+  const today = new Date().toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
   return (
-    <>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
+    <section className="max-w-7xl mx-auto px-6 py-12">
+      <div className="text-center mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+          Statistik Harga Komoditas
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Harga rata-rata dibandingkan dengan hari sebelumnya &mdash; {today}
+        </p>
+      </div>
 
-        <main className="flex-1 pt-16.75">
-          <div className="text-center pt-16.75">
-            <h1 className="text-[40px] font-semibold text-black">
-              Harga Komoditas
-            </h1>
-            <p className="text-[15px] font-medium text-black pt-0.5 pb-8 px-4 md:px-0">
-              Harga rata-rata dibandingkan dengan hari sebelumnya 08 Feb 2026
-            </p>
+      {/* Controls */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-center gap-3 mb-8">
+        <Tabs
+          value={mode}
+          onValueChange={setMode}
+          className="w-full lg:w-auto"
+        >
+          <TabsList className="w-full lg:w-auto">
+            <TabsTrigger value="Per Pasar">Per Pasar</TabsTrigger>
+            <TabsTrigger value="Per Komoditas">Per Komoditas</TabsTrigger>
+          </TabsList>
+        </Tabs>
 
-            <ul className="flex flex-col md:flex-col lg:flex-row items-stretch lg:items-center justify-center w-full mt-3 sm:mt-0 text-center text-sm font-medium text-body gap-4 lg:gap-8">
-              <Dropdown
-                label={mode}
-                items={["Per Pasar", "Per Komoditas"]}
-                onSelect={(val) => setMode(val)}
-              />
+        {mode === "Per Pasar" ? (
+          <Select
+            value={selectedPasar != null ? String(selectedPasar) : undefined}
+            onValueChange={(val) => setSelectedPasar(Number(val))}
+          >
+            <SelectTrigger className="w-full lg:w-48">
+              <SelectValue placeholder="Pilih Pasar" />
+            </SelectTrigger>
+            <SelectContent>
+              {pasar.map((p) => (
+                <SelectItem key={p.id} value={String(p.id)}>
+                  {p.nama}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <Select
+            value={
+              selectedKomoditas != null ? String(selectedKomoditas) : undefined
+            }
+            onValueChange={(val) => setSelectedKomoditas(Number(val))}
+          >
+            <SelectTrigger className="w-full lg:w-48">
+              <SelectValue placeholder="Pilih Komoditas" />
+            </SelectTrigger>
+            <SelectContent>
+              {komoditas.map((k) => (
+                <SelectItem key={k.id} value={String(k.id)}>
+                  {k.nama_komoditas}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
-              {mode === "Per Pasar" ? (
-                <Dropdown
-                  label={
-                    pasar.find((p) => p.id === selectedPasar)?.nama ??
-                    "Pilih Pasar"
-                  }
-                  items={pasar.map((p) => p.nama)}
-                  onSelect={(nama) => {
-                    const item = pasar.find((p) => p.nama === nama); 
-                    if (item) setSelectedPasar(item.id);
-                  }}
-                />
-              ) : (
-                <Dropdown
-                  label={
-                    komoditas.find((k) => k.id === selectedKomoditas)
-                      ?.nama_komoditas ?? "Pilih Komoditas"
-                  }
-                  items={komoditas.map((k) => k.nama_komoditas)}
-                  onSelect={(nama) => {
-                    const item = komoditas.find(
-                      (k) => k.nama_komoditas === nama,
-                    ); 
-                    if (item) setSelectedKomoditas(item.id);
-                  }}
-                />
-              )}
+        <input
+          type="month"
+          value={selectedBulanTahun}
+          onChange={(e) => setSelectedBulanTahun(e.target.value)}
+          className="h-9 w-full lg:w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        />
 
-              <input
-                type="month"
-                value={selectedBulanTahun}
-                onChange={(e) => setSelectedBulanTahun(e.target.value)}
-                className="w-full lg:w-auto text-gray-600 bg-gray-200 border border-transparent rounded-3xl text-sm px-4 py-2 focus:outline-none"
-              />
+        <Button variant="outline" className="w-full lg:w-auto gap-2">
+          <Download className="h-4 w-4" />
+          Unduh
+        </Button>
+      </div>
 
-              <button className="w-full lg:w-auto flex justify-center gap-2 text-gray-600 bg-gray-200 border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-3xl text-sm px-4 py-2 focus:outline-none">
-                Unduh
-                <ArrowDownTrayIcon className="w-4 h-4" />
-              </button>
-            </ul>
-          </div>
+      {error && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive text-sm mb-8">
+          Gagal memuat data: {error}
+        </div>
+      )}
 
-          {error && (
-            <p className="text-center text-red-500 mt-6">
-              Gagal memuat data: {error}
-            </p>
+      {/* Chart */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-center text-base">
+            {labelAktif} bulan {namaBulan} {tahun}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <Skeleton className="h-[500px] w-full" />
+          ) : (
+            <Grafik data={dataGrafik} loading={false} mode={mode} />
           )}
+        </CardContent>
+      </Card>
 
-          <div className="pt-20 px-6 md:px-8 lg:px-20 xl:px-30">
-            <h1 className="text-center text-black text-[17px] font-black pb-7">
-              {labelAktif} bulan {namaBulan} {tahun}
-            </h1>
-            <Grafik data={dataGrafik} loading={loading} />
-          </div>
-
-          <div className="pt-12 px-6 md:px-8 lg:px-20 xl:px-30 pb-20">
+      {/* Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Tabel Harga</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="space-y-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
+            </div>
+          ) : (
             <Tabel
               data={dataTabel}
               mode={mode}
               bulan={bulan}
               tahun={tahun}
-              loading={loading}
+              loading={false}
             />
-          </div>
-        </main>
-
-        <Footer />
-      </div>
-    </>
+          )}
+        </CardContent>
+      </Card>
+    </section>
   );
 }

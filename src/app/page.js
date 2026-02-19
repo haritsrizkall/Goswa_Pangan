@@ -1,66 +1,63 @@
 "use client";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import CardComplex from "./components/CardComplex";
+
 import { useEffect, useState } from "react";
 import { fetchKomoditas } from "@/lib/api";
-import "./custom.css";
+import HeroSection from "@/components/HeroSection";
+import CardComplex from "@/components/CardComplex";
+import CommodityCardSkeleton from "@/components/CommodityCardSkeleton";
 
 export default function Home() {
   const [komoditas, setKomoditas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchKomoditas()
-      .then((res) => {
-        setKomoditas(res.data);
-      })
-      .catch((err) => console.error(err));
+      .then((res) => setKomoditas(res.data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
+
+  const today = new Date().toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        
-        <main className="flex-1 pt-16.75">
-          <div className="container-text px-25 sm:px-15 md:px-20 pt-16.75">
-            <h1 className="text-[40px] font-semibold text-black">
-              Harga rata-rata komoditas hari ini di Palas
-            </h1>
-            <p className="text-[15px] font-medium text-black pt-0.5 pb-16.75 md:px-0">
-              Harga dibandingkan dengan hari sebelumnya 08 Feb 2026
-            </p>
+      <HeroSection />
 
-            <div className="card-product flex flex-wrap gap-2.5">
-              {komoditas.map((item) => {
-                const harga = Number(item.harga_hari_ini || 0);
-                const selisih = Number(item.selisih || 0);
+      <section className="max-w-7xl mx-auto px-6 py-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+          Harga rata-rata komoditas hari ini
+        </h2>
+        <p className="text-muted-foreground mt-1 mb-8">
+          Harga dibandingkan dengan hari sebelumnya &mdash; {today}
+        </p>
 
-                return (
-                  <CardComplex
-                    key={item.id}
-                    img={`/images/${item.product_photo}`}
-                    title={item.nama_komoditas}
-                    price={`Rp ${harga.toLocaleString()}/${item.satuan}`}
-                    button={
-                      selisih > 0
-                        ? `Naik Rp ${Math.abs(selisih).toLocaleString()}`
-                        : selisih < 0
-                          ? `Turun Rp ${Math.abs(selisih).toLocaleString()}`
-                          : "Stabil"
-                    }
-                    isDown={selisih < 0}
-                  />
-                );
-              })}
-            </div>
+        {error && (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive text-sm mb-8">
+            Gagal memuat data: {error}
           </div>
-        </main>
+        )}
 
-        <div className="pt-15">
-          <Footer />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <CommodityCardSkeleton key={i} />
+              ))
+            : komoditas.map((item) => (
+                <CardComplex key={item.id} item={item} />
+              ))}
         </div>
-      </div>
+
+        {!loading && !error && komoditas.length === 0 && (
+          <p className="text-center text-muted-foreground py-12">
+            Tidak ada data komoditas tersedia.
+          </p>
+        )}
+      </section>
     </>
   );
 }

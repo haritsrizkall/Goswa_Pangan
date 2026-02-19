@@ -1,52 +1,57 @@
 "use client";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import CardSimple from "../components/CardSimple";
+
 import { useEffect, useState } from "react";
 import { fetchPasar } from "@/lib/api";
-import "../../app/custom.css";
+import CardSimple from "@/components/CardSimple";
+import MarketCardSkeleton from "@/components/MarketCardSkeleton";
 
 export default function Pasar() {
   const [pasar, setPasar] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchPasar()
-      .then((res) => {
-        console.log(res);
-        setPasar(res.data);
-      })
-      .catch((err) => console.error(err));
-  });
+      .then((res) => setPasar(res.data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
-    <>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
+    <section className="max-w-7xl mx-auto px-6 py-12">
+      <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+        Data Pasar
+      </h1>
+      <p className="text-muted-foreground mt-1 mb-8">
+        Data pasar yang berada di Kota Palas.
+      </p>
 
-        <main className="flex-1 pt-16.75">
-          <div className="container-text px-25 sm:px-15 md:px-20 pt-16.75">
-            <h1 className="text-[40px] font-semibold text-black">Data Pasar</h1>
-            <p className="text-[15px] font-medium text-black pt-0.5 pb-16.75 md:px-0">
-              Data pasar yang berasa di kota Palas.
-            </p>
+      {error && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive text-sm mb-8">
+          Gagal memuat data: {error}
+        </div>
+      )}
 
-            <div className="card-product flex flex-wrap gap-3">
-              {pasar.map((item) => {
-                return (
-                  <CardSimple
-                    key={item.id}
-                    img={`/images/${item.product_photo}`}
-                    title={item.nama}
-                    sub={item.alamat}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </main>
-
-        <Footer />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <MarketCardSkeleton key={i} />
+            ))
+          : pasar.map((item) => (
+              <CardSimple
+                key={item.id}
+                img={`/images/${item.product_photo}`}
+                title={item.nama}
+                sub={item.alamat}
+              />
+            ))}
       </div>
-    </>
+
+      {!loading && !error && pasar.length === 0 && (
+        <p className="text-center text-muted-foreground py-12">
+          Tidak ada data pasar tersedia.
+        </p>
+      )}
+    </section>
   );
 }

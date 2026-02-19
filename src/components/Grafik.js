@@ -29,13 +29,13 @@ ChartJS.register(
 );
 
 const COLORS = [
-  "#3b82f6",
-  "#ef4444",
-  "#facc15",
-  "#22c55e",
+  "#16a34a",
+  "#15803d",
+  "#4ade80",
+  "#22d3ee",
   "#a855f7",
   "#f97316",
-  "#06b6d4",
+  "#3b82f6",
   "#ec4899",
 ];
 
@@ -124,22 +124,22 @@ export default function Grafik({ data = [], loading, mode }) {
 
   if (loading) {
     return (
-      <div className="w-full bg-neutral-primary-soft border border-black rounded-3xl shadow-xs p-4 md:p-6 flex items-center justify-center h-125">
-        <p className="text-gray-500">Memuat grafik...</p>
+      <div className="w-full flex items-center justify-center h-[500px]">
+        <p className="text-muted-foreground">Memuat grafik...</p>
       </div>
     );
   }
 
   if (!chartData) {
     return (
-      <div className="w-full bg-neutral-primary-soft border border-black rounded-3xl shadow-xs p-4 md:p-6 flex items-center justify-center h-125">
-        <p className="text-gray-400">Tidak ada data grafik.</p>
+      <div className="w-full flex items-center justify-center h-[500px]">
+        <p className="text-muted-foreground">Tidak ada data grafik.</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full bg-neutral-primary-soft border border-black rounded-3xl shadow-xs p-4 md:p-6">
+    <div className="w-full">
       <div className="overflow-x-auto lg:overflow-x-visible">
         <div
           className="relative w-full"

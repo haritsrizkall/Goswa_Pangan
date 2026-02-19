@@ -1,10 +1,21 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
   if (loading) {
-    return <p className="text-center text-gray-500 py-10">Memuat data...</p>;
+    return (
+      <p className="text-center text-muted-foreground py-10">Memuat data...</p>
+    );
   }
   if (!data.length) {
     return (
-      <p className="text-center text-gray-400 py-10">
+      <p className="text-center text-muted-foreground py-10">
         Tidak ada data tersedia.
       </p>
     );
@@ -38,25 +49,25 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
   };
 
   return (
-    <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-3xl border border-black">
-      <table className="w-full text-sm text-left text-body">
-        <thead className="text-sm text-black bg-gray-300 border-b border-gray-250">
-          <tr>
-            <th className="px-6 py-3 font-bold">No</th>
-            <th className="px-6 py-3 font-bold">
+    <div className="relative overflow-x-auto rounded-lg border">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted">
+            <TableHead className="font-bold">No</TableHead>
+            <TableHead className="font-bold">
               {mode === "Per Pasar" ? "Nama Komoditas" : "Nama Pasar"}
-            </th>
+            </TableHead>
             {hariList.map((hari) => (
-              <th key={hari} className="px-6 py-3 font-bold">
+              <TableHead key={hari} className="font-bold">
                 {hari}
-              </th>
+              </TableHead>
             ))}
-            <th className="px-6 py-3 font-bold">Rata-rata</th>
-            <th className="px-6 py-3 font-bold">Maks</th>
-            <th className="px-6 py-3 font-bold">Min</th>
-          </tr>
-        </thead>
-        <tbody>
+            <TableHead className="font-bold">Rata-rata</TableHead>
+            <TableHead className="font-bold">Maks</TableHead>
+            <TableHead className="font-bold">Min</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.map((row, idx) => {
             const hargaArr = hariList.map((hari) => {
               const found = row.harga_per_hari?.find(
@@ -66,10 +77,9 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
 
               if (harga != null) return harga;
               if (!isMasaLalu(hari)) return undefined;
-              return null; 
+              return null;
             });
 
-            // Hitung statistik hanya dari hari yang punya data (bukan 0 karena kosong)
             const valid = hargaArr.filter(
               (v) => v != null && v !== undefined && v > 0,
             );
@@ -80,31 +90,24 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
             const min = valid.length ? Math.min(...valid) : null;
 
             return (
-              <tr
-                key={row.id ?? idx}
-                className="bg-neutral-primary border-b border-black last:border-0"
-              >
-                <th className="px-6 py-4 font-medium text-black whitespace-nowrap">
-                  {idx + 1}
-                </th>
-                <td className="px-6 py-4 text-black">
+              <TableRow key={row.id ?? idx}>
+                <TableCell className="font-medium">{idx + 1}</TableCell>
+                <TableCell>
                   {mode === "Per Pasar" ? row.nama_komoditas : row.nama_pasar}
-                </td>
+                </TableCell>
                 {hargaArr.map((h, i) => (
-                  <td key={i} className="px-6 py-4 text-black">
+                  <TableCell key={i}>
                     {h === undefined ? "" : formatRupiah(h)}
-                  </td>
+                  </TableCell>
                 ))}
-                <td className="px-6 py-4 text-black">
-                  {formatRupiah(rataRata)}
-                </td>
-                <td className="px-6 py-4 text-black">{formatRupiah(maks)}</td>
-                <td className="px-6 py-4 text-black">{formatRupiah(min)}</td>
-              </tr>
+                <TableCell>{formatRupiah(rataRata)}</TableCell>
+                <TableCell>{formatRupiah(maks)}</TableCell>
+                <TableCell>{formatRupiah(min)}</TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }
