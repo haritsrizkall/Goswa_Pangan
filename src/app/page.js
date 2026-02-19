@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <div className="min-h-screen flex flex-col">
         <Navbar />
-
+        
         <main className="flex-1 pt-16.75">
           <div className="container-text px-25 sm:px-15 md:px-20 pt-16.75">
             <h1 className="text-[40px] font-semibold text-black">
