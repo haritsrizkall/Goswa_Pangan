@@ -7,7 +7,7 @@ export default function HeroSection() {
       <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-20 flex flex-col md:flex-row items-center gap-8">
         <div className="flex-1 text-center md:text-left">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-            Goswa Pangan Palas
+            GoSwa Pangan Palas
           </h1>
           <p className="mt-4 text-lg md:text-xl opacity-90 max-w-xl">
             Portal informasi harga komoditas pangan Kota Palas — pantau harga
