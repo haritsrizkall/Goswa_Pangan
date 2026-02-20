@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Komoditas | Goswa Pangan Palas",
+  title: "Komoditas | GoSwa Pangan Palas",
   description: "Data harga komoditas pangan di Kota Palas",
 };
 

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Pasar | Goswa Pangan Palas",
+  title: "Pasar | GoSwa Pangan Palas",
   description: "Data pasar di Kota Palas",
 };
 

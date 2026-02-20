@@ -38,7 +38,7 @@ export default function Navbar() {
             className="h-10 w-auto"
           />
           <span className="hidden sm:block font-bold text-primary text-lg">
-            Goswa Pangan
+            GoSwa Pangan
           </span>
         </Link>
 
@@ -78,7 +78,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
             <SheetTitle className="text-lg font-bold text-primary">
-              Goswa Pangan
+              GoSwa Pangan
             </SheetTitle>
             <nav className="flex flex-col gap-1 mt-4">
               {navigation.map((item) => {
