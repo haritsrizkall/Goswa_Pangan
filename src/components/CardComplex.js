@@ -22,7 +22,7 @@ export default function CardComplex({ item }) {
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-      <div className="relative h-40 overflow-hidden bg-muted">
+      <div className="relative h-40 overflow-hidden">
         <Image
           src={`/images/${item.product_photo}`}
           alt={item.nama_komoditas}

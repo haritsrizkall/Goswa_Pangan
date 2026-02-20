@@ -31,7 +31,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            alt="Goswa Pangan Palas"
+            alt="GoSwa Pangan Palas"
             src="/images/logo.png"
             width={40}
             height={40}

@@ -8,9 +8,9 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Brand */}
           <div>
-            <h3 className="text-lg font-bold">Goswa Pangan Palas</h3>
+            <h3 className="text-lg font-bold">GoSwa Pangan Palas</h3>
             <p className="text-sm opacity-80 mt-1">
-              Dinas Ketahanan Pangan Kota Palas
+              Dinas Pertanian dan Ketahanan Pangan Kota Palas
             </p>
           </div>
 
@@ -35,7 +35,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <p className="text-sm text-center opacity-70">
-          &copy; {new Date().getFullYear()} Dinas Ketahanan Pangan Kota Palas.
+          &copy; {new Date().getFullYear()} Dinas Pertanian dan Ketahanan Pangan Kota Palas.
           All Rights Reserved.
         </p>
       </div>
