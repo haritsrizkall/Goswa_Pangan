@@ -172,10 +172,10 @@ export default function Statistik() {
           className="h-9 w-full lg:w-auto rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         />
 
-        <Button variant="outline" className="w-full lg:w-auto gap-2">
+        {/* <Button variant="outline" className="w-full lg:w-auto gap-2">
           <Download className="h-4 w-4" />
           Unduh
-        </Button>
+        </Button> */}
       </div>
 
       {error && (
