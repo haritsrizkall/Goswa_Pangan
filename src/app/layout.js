@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Goswa Pangan Palas",
+  title: "GoSwa Pangan Palas",
   description:
     "Portal informasi harga komoditas pangan di Kota Palas — Dinas Ketahanan Pangan",
 };
