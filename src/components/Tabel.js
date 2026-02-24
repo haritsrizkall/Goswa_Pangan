@@ -27,7 +27,6 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
   const todayHari = today.getDate();
 
   const totalHari = new Date(Number(tahun), Number(bulan), 0).getDate();
-
   const hariList = Array.from({ length: totalHari }, (_, i) => i + 1);
 
   const toNumber = (val) => {
@@ -36,7 +35,7 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
   };
 
   const formatRupiah = (val) =>
-    val != null ? `Rp. ${Number(val).toLocaleString("id-ID")}` : "-";
+    val != null ? `Rp ${Number(val).toLocaleString("id-ID")}` : "-";
 
   const isMasaLalu = (hari) => {
     const sedangBulanIni =
@@ -69,25 +68,46 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
         </TableHeader>
         <TableBody>
           {data.map((row, idx) => {
+            // Build array harga dengan carry-forward
+            let lastKnownHarga = null;
             const hargaArr = hariList.map((hari) => {
               const found = row.harga_per_hari?.find(
                 (h) => Number(h.hari) === hari,
               );
               const harga = toNumber(found?.harga);
 
-              if (harga != null) return harga;
-              if (!isMasaLalu(hari)) return undefined;
-              return null;
+              if (harga != null && harga > 0) {
+                // Ada data asli → update lastKnown dan pakai
+                lastKnownHarga = harga;
+                return { value: harga, isCarryForward: false };
+              }
+
+              if (!isMasaLalu(hari)) {
+                // Masa depan → kosong
+                return { value: undefined, isCarryForward: false };
+              }
+
+              // Masa lalu tapi tidak ada data → pakai harga terakhir (carry forward)
+              return {
+                value: lastKnownHarga,
+                isCarryForward: lastKnownHarga != null,
+              };
             });
 
-            const valid = hargaArr.filter(
-              (v) => v != null && v !== undefined && v > 0,
-            );
-            const rataRata = valid.length
-              ? Math.round(valid.reduce((a, b) => a + b, 0) / valid.length)
+            // Statistik hanya dari data asli (bukan carry forward)
+            const validAsli = hargaArr
+              .filter(
+                (h) => h.value != null && h.value > 0 && !h.isCarryForward,
+              )
+              .map((h) => h.value);
+
+            const rataRata = validAsli.length
+              ? Math.round(
+                  validAsli.reduce((a, b) => a + b, 0) / validAsli.length,
+                )
               : null;
-            const maks = valid.length ? Math.max(...valid) : null;
-            const min = valid.length ? Math.min(...valid) : null;
+            const maks = validAsli.length ? Math.max(...validAsli) : null;
+            const min = validAsli.length ? Math.min(...validAsli) : null;
 
             return (
               <TableRow key={row.id ?? idx}>
@@ -96,8 +116,18 @@ export default function Tabel({ data = [], mode, bulan, tahun, loading }) {
                   {mode === "Per Pasar" ? row.nama_komoditas : row.nama_pasar}
                 </TableCell>
                 {hargaArr.map((h, i) => (
-                  <TableCell key={i}>
-                    {h === undefined ? "" : formatRupiah(h)}
+                  <TableCell
+                    key={i}
+                    className={
+                      h.isCarryForward ? "text-muted-foreground/60 italic" : ""
+                    }
+                    title={
+                      h.isCarryForward
+                        ? "Harga terakhir (belum diperbarui)"
+                        : undefined
+                    }
+                  >
+                    {h.value === undefined ? "" : formatRupiah(h.value)}
                   </TableCell>
                 ))}
                 <TableCell>{formatRupiah(rataRata)}</TableCell>

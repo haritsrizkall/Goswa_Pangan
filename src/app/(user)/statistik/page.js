@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download } from "lucide-react";
 import {
   fetchGrafikKomoditas,
   fetchGrafikPasar,
@@ -13,8 +12,7 @@ import {
 import Grafik from "@/components/Grafik";
 import Tabel from "@/components/Tabel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -193,7 +191,7 @@ export default function Statistik() {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <Skeleton className="h-[500px] w-full" />
+            <Skeleton className="h-125 w-full" />
           ) : (
             <Grafik data={dataGrafik} loading={false} mode={mode} />
           )}

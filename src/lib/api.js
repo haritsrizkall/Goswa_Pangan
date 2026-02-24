@@ -77,3 +77,94 @@ export async function fetchTabelPerKomoditas(komoditas, bulan, tahun) {
   if (!res.ok) throw new Error("Gagal fetch tabel per komoditas");
   return res.json();
 }
+
+// ─── Admin Pasar API ─────────────────────────────────────────────────────────
+export async function adminCreatePasar(formData) {
+  const res = await fetch(`${BASE_URL}/api/pasar`, {
+    method: "POST",
+    body: formData, 
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal menambah pasar");
+  }
+  return res.json();
+}
+
+export async function adminUpdatePasar(id, formData) {
+  const res = await fetch(`${BASE_URL}/api/pasar/${id}`, {
+    method: "PUT",
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal mengupdate pasar");
+  }
+  return res.json();
+}
+
+export async function adminDeletePasar(id) {
+  const res = await fetch(`${BASE_URL}/api/pasar/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal menghapus pasar");
+  }
+  return res.json();
+}
+
+// ─── Admin Komoditas API ─────────────────────────────────────────────────────────
+export async function fetchKategori() {
+  const res = await fetch(`${BASE_URL}/api/komoditas/kategori`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Gagal fetch kategori");
+  return res.json();
+}
+
+export async function adminCreateKomoditas(formData) {
+  const res = await fetch(`${BASE_URL}/api/komoditas`, {
+    method: "POST",
+    body: formData, 
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal menambah komoditas");
+  }
+  return res.json();
+}
+
+export async function adminUpdateKomoditas(id, formData) {
+  const res = await fetch(`${BASE_URL}/api/komoditas/${id}`, {
+    method: "PUT",
+    body: formData,
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal mengupdate komoditas");
+  }
+  return res.json();
+}
+
+export async function adminDeleteKomoditas(id) {
+  const res = await fetch(`${BASE_URL}/api/komoditas/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.message || "Gagal menghapus komoditas");
+  }
+  return res.json();
+}
+
+// ─── Admin Harga API ─────────────────────────────────────────────────────────
+export async function fetchHargaByKomoditas(komoditas_id) {
+  const res = await fetch(`${BASE_URL}/api/harga/komoditas/${komoditas_id}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Gagal fetch harga komoditas");
+  return res.json();
+}
+
+export async function fetchHargaByTanggal(tanggal) {
+  const res = await fetch(`${BASE_URL}/api/harga/tanggal/${tanggal}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Gagal fetch harga by tanggal");
+  return res.json();
+}
