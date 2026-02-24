@@ -7,6 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export default function CardComplex({ item }) {
+   const imgSrc = item.product_photo
+    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.product_photo}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-komoditas.jpg`;
+
   const harga = Number(item.harga_hari_ini || 0);
   const selisih = Number(item.selisih || 0);
 
@@ -24,7 +28,7 @@ export default function CardComplex({ item }) {
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative h-40 overflow-hidden">
         <Image
-          src={`/images/${item.product_photo}`}
+          src={imgSrc}
           alt={item.nama_komoditas}
           fill
           className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"

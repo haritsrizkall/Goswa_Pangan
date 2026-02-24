@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Footer() {
   return (
-    <footer className="mt-auto bg-primary text-primary-foreground">
+    <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Brand */}
@@ -16,17 +16,14 @@ export default function Footer() {
 
           {/* Nav links */}
           <nav className="flex flex-wrap gap-6 text-sm font-medium">
-            <Link href="/" className="hover:underline opacity-90 hover:opacity-100">
-              Beranda
-            </Link>
-            <Link href="/komoditas" className="hover:underline opacity-90 hover:opacity-100">
-              Komoditas
-            </Link>
-            <Link href="/pasar" className="hover:underline opacity-90 hover:opacity-100">
+            <Link href="/dashboard/pasar" className="hover:underline opacity-90 hover:opacity-100">
               Pasar
             </Link>
-            <Link href="/statistik" className="hover:underline opacity-90 hover:opacity-100">
-              Statistik
+            <Link href="/dashboard/komoditas" className="hover:underline opacity-90 hover:opacity-100">
+              Komoditas
+            </Link>
+            <Link href="/dashboard/harga" className="hover:underline opacity-90 hover:opacity-100">
+              Harga
             </Link>
           </nav>
         </div>

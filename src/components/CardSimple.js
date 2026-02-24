@@ -5,11 +5,15 @@ import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function CardSimple({ img, title, sub }) {
+   const imgSrc = img
+    ? `${process.env.NEXT_PUBLIC_API_URL}${img}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-pasar.jpg`;
+
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative h-48 overflow-hidden bg-muted">
         <Image
-          src={img}
+          src={imgSrc}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
