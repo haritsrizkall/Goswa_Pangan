@@ -40,7 +40,7 @@ export default function Pasar() {
           : pasar.map((item) => (
               <CardSimple
                 key={item.id}
-                img={`/images/${item.product_photo}`}
+                img={item.product_photo}
                 title={item.nama}
                 sub={item.alamat}
               />
