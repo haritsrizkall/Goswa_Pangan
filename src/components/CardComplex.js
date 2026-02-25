@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export default function CardComplex({ item }) {
-   const imgSrc = item.product_photo
-    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.product_photo}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-komoditas.jpg`;
+  const imgSrc = item.product_photo
+    ? item.product_photo
+    : `/images/placeholder-komoditas.jpg`;
 
   const harga = Number(item.harga_hari_ini || 0);
   const selisih = Number(item.selisih || 0);
@@ -47,7 +47,9 @@ export default function CardComplex({ item }) {
             "w-full justify-center gap-1.5 py-1.5 rounded-full text-sm font-semibold",
             isUp && "border-price-up text-price-up bg-price-up/10",
             isDown && "border-price-down text-price-down bg-price-down/10",
-            !isUp && !isDown && "border-price-stable text-price-stable bg-price-stable/10"
+            !isUp &&
+              !isDown &&
+              "border-price-stable text-price-stable bg-price-stable/10",
           )}
         >
           <Icon className="h-3.5 w-3.5" />
