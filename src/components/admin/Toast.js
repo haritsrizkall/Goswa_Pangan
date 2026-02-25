@@ -10,7 +10,7 @@ export default function Toast({ message, type = "success", onClose }) {
 
   const styles = {
     success: "bg-green-500 text-white",
-    error: "bg-destructive text-destructive-foreground",
+    error: "bg-red-500 text-white", 
   };
 
   const icons = {
