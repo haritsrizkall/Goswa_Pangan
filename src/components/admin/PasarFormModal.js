@@ -35,7 +35,7 @@ export default function PasarFormModal({
       });
       setPreview(
         initialData.product_photo
-          ? `${process.env.NEXT_PUBLIC_API_URL}/images/${initialData.product_photo}`
+          ? initialData.product_photo 
           : null,
       );
     } else {
