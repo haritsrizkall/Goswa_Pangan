@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 
 export default function CardComplex({ item }) {
   const imgSrc = item.product_photo
-    ? item.product_photo
-    : `/images/placeholder-komoditas.jpg`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.product_photo}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-komoditas.jpg`;
 
   const harga = Number(item.harga_hari_ini || 0);
   const selisih = Number(item.selisih || 0);

@@ -6,8 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function CardSimple({ item, onEdit, onDelete }) {
   const imgSrc = item.product_photo
-    ? item.product_photo
-    : `/images/placeholder-pasar.jpg`;
+    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.product_photo}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-pasar.jpg`;
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col">
