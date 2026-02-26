@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export default function CardComplex({ item, onEdit, onDelete }) {
   const imgSrc = item.product_photo
-    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.product_photo}`
+    ? item.product_photo
     : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-komoditas.jpg`;
 
   const harga = Number(item.harga_hari_ini || 0);
