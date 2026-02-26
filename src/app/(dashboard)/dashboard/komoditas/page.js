@@ -152,13 +152,13 @@ export default function Home() {
       />
 
       {loading ? (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <CommodityCardSkeleton key={i} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {filtered.map((item) => (
             <CardComplex
               key={item.id}
