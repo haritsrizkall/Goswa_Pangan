@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function CardSimple({ img, title, sub }) {
   const imgSrc = img
-    ? `${process.env.NEXT_PUBLIC_API_URL}/images/${img}`
+    ? img
     : `${process.env.NEXT_PUBLIC_API_URL}/images/placeholder-pasar.jpg`;
 
   return (
